@@ -1,0 +1,24 @@
+REJECTED RECORDS LOG
+======================================================================
+Line 211 | M001,Duplicate Meter,900,930,Mamelodi
+    Reason: Duplicate meter number M001
+Line 212 | M211,Missing Reading,,950,Soshanguve
+    Reason: Missing previous reading
+Line 213 | M212,Negative Reading,-10,20,Mamelodi
+    Reason: Negative previous reading (-10)
+Line 214 | M213,Reversed Reading,1200,1100,Ga-Rankuwa
+    Reason: Current reading (1100) is below previous reading (1200)
+Line 215 | M214,Invalid Reading,abc,1230,Atteridgeville
+    Reason: Non-numeric previous reading 'abc'
+Line 216 | M215,Missing Area,900,950,
+    Reason: Missing area
+Line 217 | M216,Too,Few,Fields
+    Reason: Wrong number of fields (expected 5, found 4)
+Line 218 | M217,Extra,100,120,Mamelodi,EXTRA
+    Reason: Wrong number of fields (expected 5, found 6)
+Line 219 | M218,,100,150,Soshanguve
+    Reason: Missing household name
+Line 220 | M219, ,100,130,Mamelodi
+    Reason: Missing household name
+======================================================================
+Total rejected: 10
