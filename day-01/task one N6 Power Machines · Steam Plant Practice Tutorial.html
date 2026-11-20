@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>N6 Power Machines · Steam Plant Practice</title>
+<style>
+:root{--navy:#005596;--navy-d:#1B2A41;--gold:#FDB515;--gold-l:#FFF5D6;--crim:#C3092B;--green:#1E8E3E;--green-l:#E6F4EA;--red-l:#FDECEE;--blue-l:#EEF5FA;--ink:#1d2530;--muted:#5b6675;--line:#d5dde6;--bg:#f6f8fb;--card:#fff;--mono:Consolas,Menlo,"DejaVu Sans Mono",monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151c;--card:#1a222d;--ink:#e6ecf3;--muted:#9fb0c2;--line:#33415a;--blue-l:#1c2c40;--gold-l:#3a3115;--green-l:#173222;--red-l:#3a1a20;--navy:#6db3ee}}
+html{font-size:17px;scroll-padding-top:env(safe-area-inset-top,0px);height:100%}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Arial,system-ui,sans-serif;line-height:1.45}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy-d);z-index:60}
+button{font:inherit;cursor:pointer}code{font-family:var(--mono);background:var(--blue-l);padding:0 .25em;border-radius:4px;font-size:.92em}
+#top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--navy-d);color:#fff;display:flex;align-items:center;gap:.6rem;padding:.35rem .8rem;flex-wrap:wrap}
+#top .brand{font-weight:700}#top .brand span{color:var(--gold)}
+#nav{display:flex;gap:.25rem;flex-wrap:wrap;flex:1}
+#nav button,.tb button{background:transparent;color:#cfe0f5;border:1px solid #3d5373;border-radius:999px;padding:.12rem .55rem;font-size:.78rem}
+#nav button.on{background:var(--gold);color:var(--navy-d);border-color:var(--gold);font-weight:700}
+#nav button.done::after{content:" ✓";color:#7ee08f}.tb button{border-radius:6px;background:#2c3e5a;color:#fff}
+#progress{height:4px;background:#3d5373;position:sticky;top:calc(env(safe-area-inset-top,0px) + 2.3rem);z-index:49}#progress i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s}
+main{max-width:1180px;margin:0 auto;padding:1rem 1rem 8rem}
+section.block{display:none}section.block.active{display:block}
+h1{margin:.2rem 0;font-size:1.8rem;color:var(--navy)}
+.chip{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:.1rem .65rem;font-size:.8rem;font-weight:600}.chip.gold{background:var(--gold);color:var(--navy-d)}
+.kicker{color:var(--muted);margin:.1rem 0 .8rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1rem}
+.card h2{margin:.1rem 0 .5rem;font-size:1.25rem;color:var(--navy)}
+.analogy{background:var(--gold-l);border-left:6px solid var(--gold);border-radius:10px;padding:.6rem 1rem;margin:.6rem 0}
+.analogy b.t{display:block;color:#a87400;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+.key{background:var(--blue-l);border-left:6px solid var(--navy);border-radius:10px;padding:.5rem 1rem;margin:.6rem 0}
+.challenge{border:2px dashed var(--crim)}.challenge h2{color:var(--crim)}.challenge h2::before{content:"🎯 "}
+.task{border:2px solid var(--green)}.task h2{color:var(--green)}.task h2::before{content:"✍️ "}
+.tip{border:2px solid #6B3FC9;background:rgba(107,63,201,.07)}.tip h2{color:#8a5ff0}.tip h2::before{content:"📝 "}
+.btn{background:var(--navy);color:#fff;border:0;border-radius:8px;padding:.35rem .8rem;font-size:.9rem;margin:.15rem .2rem .15rem 0}
+.btn.alt{background:transparent;color:var(--navy);border:1px solid var(--navy)}.btn.red{background:var(--crim)}.btn.purple{background:#6B3FC9}.btn.got{background:var(--green)}.btn:disabled{opacity:.4}
+input.ans,select.ans{font:inherit;width:7rem;padding:.2rem .4rem;border:1px solid #9fb0c2;border-radius:6px;background:var(--card);color:var(--ink)}select.ans{width:auto;max-width:100%}
+.ok{border-color:var(--green)!important;background:var(--green-l)!important}.bad{border-color:var(--crim)!important;background:var(--red-l)!important}
+.fb{font-weight:600;margin-left:.4rem;font-size:.9rem}.fb.ok{color:var(--green);background:none!important}.fb.bad{color:var(--crim);background:none!important}
+.hidden{display:none!important}.small{font-size:.86rem;color:var(--muted)}
+.reveal-box{background:var(--green-l);border:1px solid #a8d5b5;border-radius:10px;padding:.5rem 1rem;margin:.5rem 0}
+table.tt{border-collapse:collapse;margin:.4rem 0;font-size:.92rem}table.tt th,table.tt td{border:1px solid var(--line);padding:.25rem .6rem;text-align:center}
+table.tt th{background:var(--navy);color:#fff}table.tt td.l{text-align:left}
+.row{margin:.4rem 0}.step{font-weight:700;color:var(--navy)}
+.eq{font-family:var(--mono);background:var(--blue-l);border-radius:8px;padding:.3rem .6rem;display:inline-block;margin:.15rem 0}
+.plant text{font-size:12px;fill:var(--ink)}.plant .cmp{cursor:pointer;fill:var(--blue-l);stroke:var(--navy);stroke-width:2}.plant .cmp:hover,.plant .cmp.sel{fill:var(--gold)}
+.plant path{fill:none;stroke:var(--navy);stroke-width:2.5}
+.bar{height:1.6rem;border-radius:6px;background:var(--line);overflow:hidden;margin:.3rem 0}.bar i{display:block;height:100%;background:var(--green);transition:width .2s}
+.q{border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem;margin:.5rem 0}
+.q .opts button{display:block;width:100%;text-align:left;border:1px solid #c5d0dc;background:var(--card);color:var(--ink);border-radius:8px;padding:.35rem .6rem;margin:.25rem 0}
+.q .opts button.sel{background:var(--navy);color:#fff}.q .opts button.sel.ok{background:var(--green)}.q .opts button.sel.bad{background:var(--crim)}
+.badge{text-align:center;border:3px solid var(--gold);border-radius:16px;padding:1rem;background:var(--gold-l)}.badge .big{font-size:3rem}
+ul.fl{list-style:none;padding:0}ul.fl li{padding:.3rem .5rem .3rem 2rem;position:relative;border-radius:8px;margin:.2rem 0;color:var(--muted)}ul.fl li::before{content:"☐";position:absolute;left:.5rem}
+ul.fl li.got{background:var(--card);color:var(--ink);border:1px solid var(--line)}ul.fl li.got::before{content:"🧮"}
+/* step bar */
+[data-step]{scroll-margin-top:6rem;transition:opacity .3s}
+body.focus section.active [data-step]:not(.spot){opacity:.3;filter:grayscale(.7)}
+.spot{position:relative;animation:glow 1.8s infinite;border-color:var(--gold)!important}
+@keyframes glow{0%,100%{box-shadow:0 0 0 4px var(--gold),0 0 0 8px rgba(253,181,21,.35)}50%{box-shadow:0 0 0 4px var(--gold),0 0 0 18px rgba(253,181,21,0)}}
+.spot::before{content:attr(data-step);position:absolute;top:-.95rem;left:1rem;z-index:3;background:var(--gold);color:var(--navy-d);font-weight:800;font-size:.85rem;padding:.12rem .7rem;border-radius:999px;max-width:calc(100% - 2rem);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#stepbar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--navy-d);color:#fff;padding-bottom:env(safe-area-inset-bottom,0px)}
+#guide{max-height:0;overflow:hidden;transition:max-height .3s;background:#14202f}body.guide-open #guide{max-height:45vh;overflow:auto}
+.g-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;padding:.6rem 1rem}@media(max-width:900px){.g-cols{grid-template-columns:1fr}}
+.g-col{border-radius:12px;padding:.5rem .8rem;color:#1d2530;font-size:.95rem}.g-col h4{margin:0 0 .2rem;text-transform:uppercase;font-size:.85rem}
+.g1{background:#EEF5FA;border-left:6px solid #005596}.g2{background:#E6F4EA;border-left:6px solid #1E8E3E}.g3{background:#FFF5D6;border-left:6px solid #FDB515}
+.sb-row{display:flex;align-items:center;gap:.6rem;padding:.4rem .7rem}.sb-row>button{background:var(--gold);color:var(--navy-d);border:0;border-radius:10px;font-weight:800;min-width:3rem;height:2.4rem}
+.sb-row>button.t{background:#2c3e5a;color:#fff;font-weight:400;padding:0 .7rem;font-size:.85rem}.sb-mid{flex:1;min-width:0;font-size:.95rem}.sb-mid b{color:var(--gold)}
+@media print{#top,#stepbar,#progress{display:none}section.block{display:block!important}}
+</style></head><body>
+<div id="top"><div class="brand">N6 Power Machines <span>·</span> Steam Plant <span>·</span> Practice</div><nav id="nav"></nav>
+<div class="tb"><button id="fDn">A−</button><button id="fUp">A+</button></div></div>
+<div id="progress"><i></i></div>
+<main>
+
+<!-- ============ PART 1 -->
+<section class="block" data-title="The plant &amp; Rankine">
+<span class="chip">Part 1 of 4</span> <span class="chip gold">Rankine cycle</span>
+<h1>🏭 The steam plant and the Rankine cycle</h1>
+<p class="kicker">Learn the four components, then calculate the work and thermal efficiency of one complete cycle with real steam-table values.</p>
+<div class="grid2">
+<div class="card" data-step="Meet the plant">
+<h2>Click each component</h2>
+<svg class="plant" viewBox="0 0 440 250" width="100%">
+<rect class="cmp" data-c="boiler" x="20" y="20" width="110" height="80" rx="8"/><text x="75" y="64" text-anchor="middle">BOILER</text><text x="75" y="80" text-anchor="middle">+ superheater</text>
+<rect class="cmp" data-c="turbine" x="300" y="20" width="110" height="80" rx="8"/><text x="355" y="64" text-anchor="middle">TURBINE</text>
+<rect class="cmp" data-c="cond" x="300" y="150" width="110" height="80" rx="8"/><text x="355" y="194" text-anchor="middle">CONDENSER</text>
+<rect class="cmp" data-c="pump" x="20" y="150" width="110" height="80" rx="8"/><text x="75" y="194" text-anchor="middle">FEED PUMP</text>
+<path d="M130 45H300"/><path d="M355 100V150"/><path d="M300 190H130"/><path d="M75 150V100"/>
+<text x="215" y="38" text-anchor="middle">1 · superheated steam</text><text x="372" y="130">2 · wet steam</text><text x="215" y="208" text-anchor="middle">3 · saturated liquid</text><text x="12" y="130">4</text>
+</svg>
+<div class="key" id="cInfo">Tap a component to see what it does and which state points it joins.</div>
+<div class="analogy"><b class="t">Think of it like this</b>Water goes round in a loop. The boiler adds heat, the turbine takes work out, the condenser throws the waste heat away, and the pump gets the water back up to boiler pressure.</div>
+</div>
+<div class="card challenge" data-step="Match component to job">
+<h2>Match each component to its job</h2>
+<div id="match"></div><button class="btn" id="matchChk">Check</button><span class="fb" id="matchFb"></span>
+</div></div>
+
+<div class="card task" data-step="Worked cycle: calculate">
+<h2>Calculate the cycle (type your answers)</h2>
+<p><b>Given:</b> steam enters the turbine at <b>40 bar, 400 °C</b> (h<sub>1</sub> = 3214 kJ/kg, s<sub>1</sub> = 6.769 kJ/kg·K). Condenser pressure is <b>0.1 bar</b>: h<sub>f</sub> = 191.8, h<sub>fg</sub> = 2392 kJ/kg, s<sub>f</sub> = 0.649, s<sub>fg</sub> = 7.500 kJ/kg·K, v<sub>f</sub> = 0.00101 m³/kg. Expansion is <b>isentropic</b> (ideal Rankine).</p>
+<div class="chk" data-set="rk">
+<div class="row"><span class="step">1.</span> Dryness fraction after expansion, x<sub>2</sub> = (s<sub>1</sub> − s<sub>f</sub>)/s<sub>fg</sub>: <input class="ans" data-k="x2s" data-h="Use s2 = s1 because the expansion is isentropic."><span class="fb"></span></div>
+<div class="row"><span class="step">2.</span> Enthalpy h<sub>2</sub> = h<sub>f</sub> + x<sub>2</sub>·h<sub>fg</sub> (kJ/kg): <input class="ans" data-k="h2s" data-h="hf + x × hfg = 191.8 + x × 2392"><span class="fb"></span></div>
+<div class="row"><span class="step">3.</span> Pump work = v<sub>f</sub>(p<sub>1</sub> − p<sub>2</sub>) (kJ/kg; 1 bar = 100 kPa): <input class="ans" data-k="wp" data-h="0.00101 × (40 − 0.1) × 100"><span class="fb"></span></div>
+<div class="row"><span class="step">4.</span> Turbine work W<sub>T</sub> = h<sub>1</sub> − h<sub>2</sub> (kJ/kg): <input class="ans" data-k="wt" data-h="3214 − answer to step 2"><span class="fb"></span></div>
+<div class="row"><span class="step">5.</span> Heat supplied q<sub>in</sub> = h<sub>1</sub> − h<sub>4</sub>, where h<sub>4</sub> = h<sub>f</sub> + pump work (kJ/kg): <input class="ans" data-k="qin" data-h="h4 = 191.8 + 4.03 = 195.8, then 3214 − 195.8"><span class="fb"></span></div>
+<div class="row"><span class="step">6.</span> Rankine efficiency = (W<sub>T</sub> − W<sub>P</sub>)/q<sub>in</sub> (%): <input class="ans" data-k="eta" data-h="Net work ÷ heat supplied, × 100"><span class="fb"></span></div>
+<button class="btn" data-chk>Check my answers</button> <button class="btn alt" data-rev>Show answers</button>
+</div></div>
+<div class="card tip" data-step="Exam tip: Rankine" data-fs="Rankine efficiency = (W_T − W_P) ÷ (h1 − h4)">
+<h2>Exam tip: where marks are lost</h2>
+<ul><li>Forgetting pump work, or using h<sub>3</sub> instead of h<sub>4</sub> as the boiler inlet.</li><li>Mixing units: v in m³/kg × p in <b>kPa</b> gives kJ/kg.</li><li>Not writing the formula first. Method marks are awarded before the answer.</li></ul>
+<button class="btn purple fs">＋ Add to my formula sheet</button></div>
+</section>
+
+<!-- ============ PART 2 -->
+<section class="block" data-title="Boiler performance">
+<span class="chip">Part 2 of 4</span> <span class="chip gold">Boiler</span>
+<h1>🔥 Boiler performance</h1>
+<p class="kicker">How much of the coal’s energy ends up in the steam? Equivalent evaporation, factor of evaporation and boiler efficiency.</p>
+<div class="card" data-step="The three boiler measures">
+<h2>Three measures you must know</h2>
+<p><span class="eq">Boiler efficiency = ṁs(h − hfw) ÷ (ṁf × CV)</span><br>
+<span class="eq">Factor of evaporation = (h − hfw) ÷ 2257</span><br>
+<span class="eq">Equivalent evaporation = ṁs × factor of evaporation</span></p>
+<div class="analogy"><b class="t">Why 2257?</b>It is the latent heat of steam at 100 °C. Equivalent evaporation compares any boiler with a standard one: “from and at 100 °C”, turning water at 100 °C into dry steam at 100 °C.</div>
+</div>
+<div class="grid2">
+<div class="card challenge" data-step="Predict: coal vs efficiency">
+<h2>Predict, then play</h2>
+<p>A boiler makes <b>8000 kg/h</b> of dry saturated steam at 20 bar (h = 2799 kJ/kg) from feed water at 60 °C (h<sub>fw</sub> = 251 kJ/kg). Coal CV is <b>28 000 kJ/kg</b>.</p>
+<p><b>Predict:</b> if the boiler burns <i>more</i> coal for the same steam, will efficiency go up or down?</p>
+<p><button class="btn alt" data-pv="up">Up</button> <button class="btn alt" data-pv="down">Down</button> <span class="fb" id="pvFb"></span></p>
+<label>Coal burnt: <b id="coalV">900</b> kg/h <input type="range" id="coal" min="700" max="1100" step="10" value="900"></label>
+<div class="bar"><i id="effBar"></i></div><p>Efficiency = <b id="effV"></b> %</p>
+</div>
+<div class="card task" data-step="Calculate with 900 kg/h coal">
+<h2>Now calculate (coal = 900 kg/h)</h2>
+<div class="chk" data-set="bl">
+<div class="row">1. Heat given to the steam per hour (MJ/h): <input class="ans" data-k="heat" data-h="8000 × (2799 − 251) ÷ 1000"><span class="fb"></span></div>
+<div class="row">2. Factor of evaporation: <input class="ans" data-k="fe" data-h="(2799 − 251) ÷ 2257"><span class="fb"></span></div>
+<div class="row">3. Equivalent evaporation (kg/h from and at 100 °C): <input class="ans" data-k="ee" data-h="8000 × factor of evaporation"><span class="fb"></span></div>
+<div class="row">4. Boiler efficiency (%): <input class="ans" data-k="beff" data-h="Heat to steam ÷ (900 × 28 000)"><span class="fb"></span></div>
+<button class="btn" data-chk>Check</button> <button class="btn alt" data-rev>Show answers</button>
+</div></div></div>
+<div class="card tip" data-step="Exam tip: boiler" data-fs="η_boiler = ṁs(h − hfw) ÷ (ṁf × CV); factor of evap. = (h − hfw) ÷ 2257">
+<h2>Exam tip</h2><ul><li>Keep time units the same: kg/h with kg/h, or kg/s with kg/s.</li><li>Losses: hot flue gas (largest), incomplete combustion, radiation, unburnt carbon in ash.</li><li>For wet steam use h = h<sub>f</sub> + x·h<sub>fg</sub>. For superheated steam add c<sub>p</sub>(T − T<sub>sat</sub>).</li></ul>
+<button class="btn purple fs">＋ Add to my formula sheet</button></div>
+</section>
+
+<!-- ============ PART 3 -->
+<section class="block" data-title="Turbine &amp; Willans">
+<span class="chip">Part 3 of 4</span> <span class="chip gold">Turbine</span>
+<h1>🌀 The steam turbine</h1>
+<p class="kicker">Real turbines are not isentropic. Add isentropic efficiency, find the exhaust condition, then use the Willans line.</p>
+<div class="grid2">
+<div class="card challenge" data-step="Slide the efficiency">
+<h2>Drag the efficiency</h2>
+<svg viewBox="0 0 320 210" width="100%" id="mol"></svg>
+<label>Isentropic efficiency: <b id="etaV">80</b> % <input type="range" id="eta" min="55" max="100" value="80"></label>
+<p>Exhaust dryness x<sub>2</sub> = <b id="xV"></b> &nbsp; Actual work = <b id="wV"></b> kJ/kg</p>
+<div class="key">A <b>lower</b> efficiency puts the exhaust point further right (more entropy) and makes the steam <b>drier</b> at the exhaust. That is a real benefit for blade erosion.</div>
+</div>
+<div class="card task" data-step="Calculate: isentropic efficiency">
+<h2>Calculate (η<sub>isen</sub> = 80 %)</h2>
+<p>Same steam as Part 1, 20 kg/s through the turbine. Ideal drop W<sub>isen</sub> = 1070 kJ/kg (from Part 1).</p>
+<div class="chk" data-set="tb">
+<div class="row">1. Actual work W = η × W<sub>isen</sub> (kJ/kg): <input class="ans" data-k="wact" data-h="0.80 × (3214 − 2143.7)"><span class="fb"></span></div>
+<div class="row">2. Actual exhaust h<sub>2</sub> = h<sub>1</sub> − W (kJ/kg): <input class="ans" data-k="h2" data-h="3214 − actual work"><span class="fb"></span></div>
+<div class="row">3. Exhaust dryness x<sub>2</sub> = (h<sub>2</sub> − 191.8)/2392: <input class="ans" data-k="x2" data-h="Use the h2 you just found."><span class="fb"></span></div>
+<div class="row">4. Power output (MW) = ṁ × W ÷ 1000: <input class="ans" data-k="pw" data-h="20 × actual work ÷ 1000"><span class="fb"></span></div>
+<div class="row">5. Steam rate (kg/kWh) = 3600 ÷ W: <input class="ans" data-k="sr" data-h="3600 ÷ actual work in kJ/kg"><span class="fb"></span></div>
+<button class="btn" data-chk>Check</button> <button class="btn alt" data-rev>Show answers</button>
+</div></div></div>
+<div class="grid2">
+<div class="card" data-step="The Willans line">
+<h2>The Willans line</h2>
+<p>Steam used by a turbine rises in a <b>straight line</b> with load: <span class="eq">ṁ = a + b·P</span>, where a is the no-load steam (kg/h) and b is the extra steam per kW.</p>
+<svg viewBox="0 0 320 200" width="100%" id="will"></svg>
+<p class="small">Test readings: 5000 kg/h at 1000 kW and 8000 kg/h at 2000 kW.</p>
+</div>
+<div class="card task" data-step="Calculate with Willans">
+<h2>Use the line</h2>
+<div class="chk" data-set="wl">
+<div class="row">1. Slope b (kg/kWh): <input class="ans" data-k="wb" data-h="(8000 − 5000) ÷ (2000 − 1000)"><span class="fb"></span></div>
+<div class="row">2. No-load steam a (kg/h): <input class="ans" data-k="wa" data-h="5000 − b × 1000"><span class="fb"></span></div>
+<div class="row">3. Steam used at 1500 kW (kg/h): <input class="ans" data-k="w15" data-h="a + b × 1500"><span class="fb"></span></div>
+<button class="btn" data-chk>Check</button> <button class="btn alt" data-rev>Show answers</button>
+</div></div></div>
+<div class="card tip" data-step="Exam tip: turbine" data-fs="η_isen = (h1 − h2) ÷ (h1 − h2s); steam rate = 3600 ÷ W; Willans: ṁ = a + bP">
+<h2>Exam tip</h2><ul><li>Isentropic efficiency uses <b>actual</b> drop over <b>ideal</b> drop. Always &lt; 100 %.</li><li>Find h<sub>2s</sub> first with entropy, then use the efficiency to find the real h<sub>2</sub>.</li><li>Draw the h–s sketch with both 2s and 2. It earns marks.</li></ul>
+<button class="btn purple fs">＋ Add to my formula sheet</button></div>
+</section>
+
+<!-- ============ PART 4 -->
+<section class="block" data-title="Condenser &amp; exit ticket">
+<span class="chip">Part 4 of 4</span> <span class="chip gold">Condenser + test</span>
+<h1>❄️ The condenser, then your exit ticket</h1>
+<p class="kicker">Find the cooling water needed, then test yourself on the whole steam plant.</p>
+<div class="card task" data-step="Cooling water flow">
+<h2>Cooling water flow</h2>
+<p>The 20 kg/s of exhaust steam from Part 3 enters the condenser at 0.1 bar with the dryness you found (x<sub>2</sub> ≈ 0.906, h<sub>2</sub> ≈ 2358 kJ/kg). It leaves as saturated water (h<sub>f</sub> = 191.8). Cooling water enters at 15 °C and leaves at 30 °C. c<sub>p</sub> of water = 4.186 kJ/kg·K.</p>
+<div class="analogy"><b class="t">Heat balance</b>Heat lost by the steam = heat gained by the cooling water: <span class="eq">ṁs(h2 − hf) = ṁw × cp × Δt</span></div>
+<div class="chk" data-set="cd">
+<div class="row">1. Heat removed from the steam (kW): <input class="ans" data-k="qc" data-h="20 × (2357.8 − 191.8)"><span class="fb"></span></div>
+<div class="row">2. Cooling water flow ṁ<sub>w</sub> (kg/s): <input class="ans" data-k="mw" data-h="heat removed ÷ (4.186 × 15)"><span class="fb"></span></div>
+<div class="row">3. Cooling water per kg of steam (kg/kg): <input class="ans" data-k="ratio" data-h="ṁw ÷ 20"><span class="fb"></span></div>
+<button class="btn" data-chk>Check</button> <button class="btn alt" data-rev>Show answers</button>
+</div></div>
+<div class="grid2">
+<div class="card challenge" data-step="Exit ticket: lock in">
+<h2>Exit ticket</h2>
+<p class="small">One answer per question. You can change your mind until you press <b>🔒 Lock in</b>. One attempt only, saved in this browser.</p>
+<div id="quiz"></div>
+<button class="btn red" id="lock" disabled>🔒 Lock in my answers</button> <span class="small" id="left"></span>
+<div id="qres" class="hidden"></div>
+</div>
+<div>
+<div class="badge hidden" id="badge"><div class="big">🏭🎓</div><h2 style="margin:.2rem 0">Steam Plant Strategist</h2><p id="badgeTxt"></p></div>
+<div class="card tip" data-step="My formula sheet">
+<h2>My formula sheet</h2><p class="small">Collected from the exam tips in Parts 1–3. Missed one? Use the part buttons at the top.</p>
+<ul class="fl" id="fsList"></ul>
+<button class="btn alt" id="reset">↺ Start over</button></div>
+</div></div>
+</section>
+</main>
+
+<div id="stepbar"><div id="guide"><div class="g-cols">
+<div class="g-col g1"><h4>🎤 Learn</h4><div id="gS"></div></div>
+<div class="g-col g2"><h4>✅ Do this now</h4><div id="gD"></div></div>
+<div class="g-col g3"><h4>📚 Remember</h4><div id="gE"></div></div></div></div>
+<div class="sb-row"><button id="pB">◀</button><div class="sb-mid" id="sbT"></div>
+<button class="t" id="foc">🔦 Focus</button><button class="t" id="gB">▲ Guide</button><button id="nB">▶</button></div></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const sg=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},gt=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+/* ---- steam-table data and answers (all computed from the same numbers) ---- */
+const h1=3214,s1=6.769,hf=191.8,hfg=2392,sf=.649,sfg=7.5,vf=.00101;
+const x2s=(s1-sf)/sfg,h2s=hf+x2s*hfg,wp=vf*(40-.1)*100,h4=hf+wp,wt=h1-h2s,qin=h1-h4,eta=(wt-wp)/qin*100;
+const dh=2799-251,heat=8000*dh/1000,fe=dh/2257,ee=8000*fe,beff=heat*1000/(900*28000)*100;
+const wact=.8*wt,h2=h1-wact,x2=(h2-hf)/hfg,pw=20*wact/1000,sr=3600/wact;
+const qc=20*(h2-hf),mw=qc/(4.186*15);
+const ANS={x2s,h2s,wp,wt,qin,eta,heat,fe,ee,beff,wact,h2,x2,pw,sr,wb:3,wa:2000,w15:6500,qc,mw,ratio:mw/20};
+const fmt=v=>Math.abs(v)<10?v.toFixed(3):v<1000?v.toFixed(1):Math.round(v);
+/* ---- answer checking ---- */
+$$('.chk').forEach(box=>{
+ box.querySelector('[data-chk]').onclick=()=>{box.querySelectorAll('input.ans').forEach(i=>{const a=ANS[i.dataset.k],v=parseFloat(i.value),f=i.nextElementSibling;
+  if(isNaN(v)){f.textContent='';i.className='ans';return}
+  const ok=Math.abs(v-a)<=Math.max(.02*Math.abs(a),.002);i.className='ans '+(ok?'ok':'bad');f.className='fb '+(ok?'ok':'bad');f.textContent=ok?'✓ correct':'✗ hint: '+i.dataset.h});done()};
+ box.querySelector('[data-rev]').onclick=()=>box.querySelectorAll('input.ans').forEach(i=>{i.value=fmt(ANS[i.dataset.k]);i.className='ans ok';i.nextElementSibling.className='fb ok';i.nextElementSibling.textContent='answer shown'});
+});
+/* ---- Part 1: plant + match ---- */
+const INFO={boiler:'<b>Boiler + superheater:</b> adds heat at constant pressure. Joins 4 → 1. Water becomes dry steam, then superheated steam. q<sub>in</sub> = h<sub>1</sub> − h<sub>4</sub>.',turbine:'<b>Turbine:</b> steam expands from 1 to 2 and delivers shaft work W<sub>T</sub> = h<sub>1</sub> − h<sub>2</sub>. The exhaust is wet steam.',cond:'<b>Condenser:</b> rejects heat to cooling water at constant low pressure. Joins 2 → 3. Steam leaves as saturated liquid.',pump:'<b>Feed pump:</b> raises water from condenser pressure to boiler pressure, 3 → 4. Needs very little work because water is almost incompressible.'};
+$$('.cmp').forEach(r=>r.onclick=()=>{$$('.cmp').forEach(x=>x.classList.remove('sel'));r.classList.add('sel');$('#cInfo').innerHTML=INFO[r.dataset.c]});
+const M=[['Raises water pressure with almost no work','Feed pump'],['Rejects heat to cooling water','Condenser'],['Produces shaft work from expanding steam','Turbine'],['Turns feed water into superheated steam','Boiler']];
+$('#match').innerHTML=M.map((m,i)=>`<div class="row">${m[0]} → <select class="ans" data-i="${i}"><option value="">choose…</option>${['Boiler','Turbine','Condenser','Feed pump'].map(o=>`<option>${o}</option>`).join('')}</select></div>`).join('');
+$('#matchChk').onclick=()=>{let n=0;$$('#match select').forEach(s=>{const ok=s.value===M[s.dataset.i][1];n+=ok;s.className='ans '+(s.value?ok?'ok':'bad':'')});$('#matchFb').className='fb '+(n==4?'ok':'bad');$('#matchFb').textContent=n+' / 4 correct';done()};
+/* ---- Part 2: boiler slider ---- */
+const coalUp=()=>{const c=+$('#coal').value,e=heat*1000/(c*28000)*100;$('#coalV').textContent=c;$('#effV').textContent=e.toFixed(1);$('#effBar').style.width=e+'%'};
+$('#coal').oninput=coalUp;coalUp();
+$$('[data-pv]').forEach(b=>b.onclick=()=>{const ok=b.dataset.pv==='down';$('#pvFb').className='fb '+(ok?'ok':'bad');$('#pvFb').textContent=ok?'✓ Down. Same useful heat, more fuel in.':'✗ Try the slider. Useful heat stays the same, fuel energy goes up.'});
+/* ---- Part 3: Mollier-style chart + Willans ---- */
+const sx=s=>20+(s-6.6)/(8.4-6.6)*280,hy=h=>190-(h-1900)/(3300-1900)*170;
+function mol(){const e=+$('#eta').value/100,w=e*wt,hh=h1-w,x=(hh-hf)/hfg,s2=sf+x*sfg;
+ $('#etaV').textContent=Math.round(e*100);$('#xV').textContent=x.toFixed(3);$('#wV').textContent=Math.round(w);
+ $('#mol').innerHTML=`<text x="6" y="12" font-size="11" fill="currentColor">h (kJ/kg)</text><text x="260" y="205" font-size="11" fill="currentColor">s (kJ/kg·K)</text>
+ <line x1="20" y1="190" x2="305" y2="190" stroke="currentColor"/><line x1="20" y1="15" x2="20" y2="190" stroke="currentColor"/>
+ <line x1="${sx(s1)}" y1="${hy(h1)}" x2="${sx(s1)}" y2="${hy(h2s)}" stroke="#005596" stroke-width="2" stroke-dasharray="5"/>
+ <line x1="${sx(s1)}" y1="${hy(h1)}" x2="${sx(s2)}" y2="${hy(hh)}" stroke="#C3092B" stroke-width="3"/>
+ <circle cx="${sx(s1)}" cy="${hy(h1)}" r="5" fill="#005596"/><text x="${sx(s1)+8}" y="${hy(h1)+4}" font-size="11" fill="currentColor">1</text>
+ <circle cx="${sx(s1)}" cy="${hy(h2s)}" r="5" fill="#005596"/><text x="${sx(s1)-26}" y="${hy(h2s)+4}" font-size="11" fill="currentColor">2s</text>
+ <circle cx="${sx(s2)}" cy="${hy(hh)}" r="6" fill="#C3092B"/><text x="${sx(s2)+9}" y="${hy(hh)+4}" font-size="11" fill="currentColor">2</text>`}
+$('#eta').oninput=mol;mol();
+const wx=p=>30+p/3000*270,wy=m=>180-m/11000*165;
+$('#will').innerHTML=`<line x1="30" y1="180" x2="305" y2="180" stroke="currentColor"/><line x1="30" y1="10" x2="30" y2="180" stroke="currentColor"/>
+<line x1="${wx(0)}" y1="${wy(2000)}" x2="${wx(3000)}" y2="${wy(11000)}" stroke="#005596" stroke-width="2.5"/>
+<circle cx="${wx(1000)}" cy="${wy(5000)}" r="5" fill="#C3092B"/><circle cx="${wx(2000)}" cy="${wy(8000)}" r="5" fill="#C3092B"/>
+<text x="34" y="${wy(2000)-5}" font-size="11" fill="currentColor">a = ?</text><text x="${wx(1000)+6}" y="${wy(5000)+14}" font-size="11" fill="currentColor">(1000; 5000)</text><text x="${wx(2000)-70}" y="${wy(8000)-8}" font-size="11" fill="currentColor">(2000; 8000)</text>
+<text x="200" y="196" font-size="11" fill="currentColor">Load P (kW)</text><text x="34" y="22" font-size="11" fill="currentColor">Steam ṁ (kg/h)</text>`;
+/* ---- Part 4: quiz ---- */
+const Q=[['Which state point is the boiler inlet in the ideal Rankine cycle with a pump?',['The condenser outlet (3)','The pump outlet (4)','The turbine inlet (1)'],1],
+['Isentropic efficiency of a turbine is…',['actual drop ÷ ideal drop','ideal drop ÷ actual drop','net work ÷ heat supplied'],0],
+['Why is “equivalent evaporation” used?',['To measure coal quality','To compare boilers on a common standard','To find condenser vacuum'],1],
+['A Willans line plots steam consumption against…',['Boiler pressure','Condenser temperature','Turbine load'],2],
+['Cooling water is increased while steam flow stays the same. The cooling water temperature rise…',['gets smaller','gets bigger','stays the same'],0]];
+const pick=[];$('#quiz').innerHTML=Q.map((q,i)=>`<div class="q"><b>${i+1}.</b> ${q[0]}<div class="opts">${q[1].map((o,j)=>`<button data-q="${i}" data-o="${j}">${o}</button>`).join('')}</div></div>`).join('');
+function lockUI(res){$$('#quiz button').forEach(b=>{b.disabled=true;const q=+b.dataset.q,o=+b.dataset.o;if(o==Q[q][2])b.classList.add('ok');if(res[q]==o){b.classList.add('sel');if(o!=Q[q][2])b.classList.add('bad')}});
+ const sc=res.filter((r,i)=>r==Q[i][2]).length;$('#lock').classList.add('hidden');$('#left').textContent='';$('#qres').classList.remove('hidden');$('#qres').innerHTML=`<p><b>Score: ${sc} / ${Q.length}</b> (locked)</p>`;
+ if(sc>=4){$('#badge').classList.remove('hidden');$('#badgeTxt').textContent='You scored '+sc+'/'+Q.length+'. Ready for the full past-paper questions.'}}
+$$('#quiz button').forEach(b=>b.onclick=()=>{const q=+b.dataset.q;pick[q]=+b.dataset.o;$$(`#quiz button[data-q="${q}"]`).forEach(x=>x.classList.toggle('sel',x===b));const n=pick.filter(v=>v!==undefined).length;$('#lock').disabled=n<Q.length;$('#left').textContent=n<Q.length?(Q.length-n)+' left':''});
+$('#lock').onclick=()=>{sg('n6steam_quiz',JSON.stringify(pick));lockUI(pick);done()};
+try{const s=JSON.parse(gt('n6steam_quiz')||'null');if(s)lockUI(s)}catch(e){}
+/* ---- formula sheet ---- */
+const FS=[];$$('.fs').forEach(b=>{const c=b.closest('[data-fs]');FS.push(c.dataset.fs);b.onclick=()=>{b.classList.add('got');b.textContent='✓ Added';const g=JSON.parse(gt('n6fs')||'[]');if(!g.includes(c.dataset.fs))g.push(c.dataset.fs);sg('n6fs',JSON.stringify(g));fsDraw()}});
+function fsDraw(){let g=[];try{g=JSON.parse(gt('n6fs')||'[]')}catch(e){}$('#fsList').innerHTML=FS.map(f=>`<li class="${g.includes(f)?'got':''}">${f}</li>`).join('')}fsDraw();
+$('#reset').onclick=()=>{sg('n6fs','[]');fsDraw();$$('.fs').forEach(b=>{b.classList.remove('got');b.textContent='＋ Add to my formula sheet'})};
+/* ---- navigation + step bar ---- */
+const GUIDE=[[
+ ['Four components, four state points: 1 turbine inlet, 2 exhaust, 3 condensate, 4 pump outlet.','Click all four components.','Heat in at the boiler, work out at the turbine.'],
+ ['Each component has one job.','Match all four, then press Check.','Pump work is tiny because water is almost incompressible.'],
+ ['Work through the steps in order. Each answer feeds the next.','Type all six answers and press Check.','Isentropic means s<sub>2</sub> = s<sub>1</sub>.'],
+ ['These are the most common marks lost.','Add the formula to your sheet.','η = net work ÷ heat supplied.']],[
+ ['Three boiler measures share one term: h − h<sub>fw</sub>.','Read the three formulas.','2257 kJ/kg is the latent heat at 100 °C.'],
+ ['Predicting before playing makes the idea stick.','Predict, then move the slider.','More fuel for the same steam means lower efficiency.'],
+ ['Same data, four answers.','Work out all four and press Check.','Keep units consistent: kg/h with kg/h.'],
+ ['Boiler exam traps.','Add the formula to your sheet.','Flue gas is the biggest loss.']],[
+ ['Real expansion ends at a higher entropy than ideal.','Drag the slider from 100 % down to 55 %.','Lower efficiency means drier exhaust steam.'],
+ ['Use the Part 1 ideal drop of 1070 kJ/kg.','Answer all five and press Check.','Steam rate = 3600 ÷ W (kg/kWh).'],
+ ['Straight line: ṁ = a + bP.','Look at the two red test points.','a is the no-load steam consumption.'],
+ ['Two points fix a straight line.','Find b, a, then the steam at 1500 kW.','Check by testing 1000 kW on your line.'],
+ ['Turbine exam traps.','Add the formula to your sheet.','Always sketch 2s and 2 on the h–s chart.']],[
+ ['Heat from steam = heat to cooling water.','Answer all three and press Check.','Condensate leaves at saturation, so use h<sub>f</sub>.'],
+ ['Test yourself on the whole plant.','Answer all five, then lock in.','One attempt only.'],
+ ['Your formulas in one place.','Check which ones you collected.','Revisit any part from the top bar.']]];
+const blocks=$$('section.block');let cur=0,st=0;const seen=new Set(JSON.parse(gt('n6seen')||'[]'));
+blocks.forEach((b,i)=>{const n=document.createElement('button');n.textContent=b.dataset.title.replace('&amp;','&');n.onclick=()=>show(i);$('#nav').append(n)});
+function done(){}
+function show(i,s=0){cur=i;st=s;blocks.forEach((b,j)=>b.classList.toggle('active',j==i));$$('#nav button').forEach((n,j)=>{n.classList.toggle('on',j==i);n.classList.toggle('done',seen.has(j)&&j!=i)});spot()}
+function spot(){const cs=$$('section.block.active [data-step]');$$('.spot').forEach(e=>e.classList.remove('spot'));const c=cs[st];c.classList.add('spot');c.scrollIntoView({behavior:'smooth',block:'center'});
+ const g=GUIDE[cur][st]||['','',''];$('#gS').innerHTML=g[0];$('#gD').innerHTML=g[1];$('#gE').innerHTML=g[2];
+ $('#sbT').innerHTML=`<b>Part ${cur+1}</b> · Step ${st+1} of ${cs.length}: ${c.dataset.step}`;
+ seen.add(cur);sg('n6seen',JSON.stringify([...seen]));$('#progress i').style.width=((cur+(st+1)/cs.length)/blocks.length*100)+'%'}
+function go(d){const n=$$('section.block.active [data-step]').length;if(st+d>=n){if(cur<blocks.length-1)show(cur+1);}else if(st+d<0){if(cur>0){show(cur-1);st=$$('section.block.active [data-step]').length-1;spot()}}else{st+=d;spot()}}
+$('#nB').onclick=()=>go(1);$('#pB').onclick=()=>go(-1);
+$('#gB').onclick=()=>document.body.classList.toggle('guide-open');$('#foc').onclick=()=>document.body.classList.toggle('focus');
+document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key=='ArrowRight')go(1);if(e.key=='ArrowLeft')go(-1)});
+let fz=17;$('#fUp').onclick=()=>{fz=Math.min(24,fz+1);document.documentElement.style.fontSize=fz+'px'};$('#fDn').onclick=()=>{fz=Math.max(13,fz-1);document.documentElement.style.fontSize=fz+'px'};
+show(0);
+</script></body></html>
